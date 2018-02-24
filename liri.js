@@ -59,11 +59,18 @@ function spotifySong(parameter) {
     // console.log('Album: ' + result.tracks.items[0].album.name);
     // console.log(" ");
     // }
-   spotify.parameter({ type: "track", query: parameter }, function (err, data) {
+   spotify.search({ type: "track", query: parameter }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-        console.log(data.tracks.items[0]);
+        // console.log(data.tracks.items[0]);
+        console.log("");
+        for (var i = 0; i < data.tracks.items[0].artists.length; i++){
+            console.log(data.tracks.items[0].artists[i].name);
+        }
+        console.log(data.tracks.items[0].preview_url);
+        console.log(data.tracks.items[0].name );
+        console.log("");
     });
 }
 
