@@ -8,6 +8,7 @@ var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
 var type = process.argv[2];
 var input = process.argv[3];
+var value = getValue(process.argv);
 
 
 switch (type) {
@@ -15,7 +16,7 @@ switch (type) {
         getTweets();
         break;
     case "spotify-this-song":
-        spotifySong(input);
+        spotifySong(value);
         break;
     case "movie-this":
         getMovie(input);
@@ -59,19 +60,33 @@ function spotifySong(parameter) {
     // console.log('Album: ' + result.tracks.items[0].album.name);
     // console.log(" ");
     // }
-   spotify.search({ type: "track", query: parameter }, function (err, data) {
+    spotify.search({ type: "track", query: parameter }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
         // console.log(data.tracks.items[0]);
         console.log("");
-        for (var i = 0; i < data.tracks.items[0].artists.length; i++){
+        for (var i = 0; i < data.tracks.items[0].artists.length; i++) {
             console.log(data.tracks.items[0].artists[i].name);
         }
         console.log(data.tracks.items[0].preview_url);
-        console.log(data.tracks.items[0].name );
+        console.log(data.tracks.items[0].name);
         console.log("");
     });
+}
+
+function getValue(parameter) {
+    var text = "";
+    for (var i = 3; i < parameter.length; i++) {
+
+        if (i > 3 && i < parameter.length) {
+            text = text + "+" + parameter[i];
+        }
+        else {
+            text += parameter[i];
+        }
+    }
+    return text;
 }
 
 function getMovie(parameter) {
@@ -97,12 +112,12 @@ function getMovie(parameter) {
 function extFile() {
     var fs = require("fs");
     fs.readFile("random.txt", "utf8", function (error, data) {
-        if (error){
+        if (error) {
             return console.log(error);
         }
         spotifySong(data);
     });
-    }
+}
 
 
 
