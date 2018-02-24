@@ -14,15 +14,12 @@ switch (type) {
     case "my-tweets":
         getTweets();
         break;
-
     case "spotify-this-song":
         spotifySong(input);
         break;
-
     case "movie-this":
         getMovie(input);
         break;
-
     case "do-what-it-says":
         extFile();
         break;
@@ -62,12 +59,11 @@ function spotifySong(parameter) {
     // console.log('Album: ' + result.tracks.items[0].album.name);
     // console.log(" ");
     // }
-    spotify.search({ type: "track", query: parameter }, function (err, data) {
+   spotify.parameter({ type: "track", query: parameter }, function (err, data) {
         if (err) {
             return console.log('Error occurred: ' + err);
         }
-        var result = JSON.parse(data);
-        console.log(result.tracks.item[0]);
+        console.log(data.tracks.items[0]);
     });
 }
 
@@ -90,6 +86,16 @@ function getMovie(parameter) {
         }
     });
 }
+
+function extFile() {
+    var fs = require("fs");
+    fs.readFile("random.txt", "utf8", function (error, data) {
+        if (error){
+            return console.log(error);
+        }
+        spotifySong(data);
+    });
+    }
 
 
 
