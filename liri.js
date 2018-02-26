@@ -115,7 +115,11 @@ function extFile() {
         if (error) {
             return console.log(error);
         }
-        spotifySong(data);
+        var pos = data.indexOf(",");
+        console.log(pos);
+        type = data.substr(0,pos);
+        console.log(str);
+        
     });
 }
 
