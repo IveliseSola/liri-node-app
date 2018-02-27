@@ -8,8 +8,9 @@ var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
 var type = process.argv[2];
-// var input = process.argv[3];
 var value = getValue(process.argv);
+
+main(type, value);
 
 function main(parameter1, parameter2) {
 
@@ -28,9 +29,6 @@ function main(parameter1, parameter2) {
             break;
     }
 }
-
-main(type, value);
-
 
 function getTweets() {
     var arrayToWrite = [];
@@ -65,31 +63,17 @@ function spotifySong(parameter) {
         // console.log(data.tracks.items[0]);
 
         for (var i = 0; i < data.tracks.items[0].artists.length; i++) {
-            console.log(" " + "\n" + data.tracks.items[0].artists[i].name + "\n");
-            arrayToWrite.push(" " + "\n" + data.tracks.items[0].artists[i].name + "\n");
+            console.log("\n" +"The Artist(s): " + data.tracks.items[0].artists[i].name + "\n");
+            arrayToWrite.push("\n" +"The Artist(s): "  + data.tracks.items[0].artists[i].name + "\n");
         }
-        console.log(" " + "\n" + data.tracks.items[0].preview_url + ". "
-            + data.tracks.items[0].name + "\n");
+        console.log("The preview_url: " + data.tracks.items[0].preview_url + ". " + "\n"
+            + "The name: " + data.tracks.items[0].name + "\n");
 
-        arrayToWrite.push(" " + "\n" + data.tracks.items[0].preview_url + ". "
-            + data.tracks.items[0].name + "\n");
+        arrayToWrite.push("The preview_url: "+ data.tracks.items[0].preview_url + ". " + "\n"
+            + "The name: " +data.tracks.items[0].name + "\n");
 
         writeThis(arrayToWrite);
     });
-}
-
-function getValue(parameter) {
-    var text = "";
-    for (var i = 3; i < parameter.length; i++) {
-
-        if (i > 3 && i < parameter.length) {
-            text = text + "+" + parameter[i];
-        }
-        else {
-            text += parameter[i];
-        }
-    }
-    return text;
 }
 
 function getMovie(parameter) {
@@ -100,23 +84,23 @@ function getMovie(parameter) {
     request("http://www.omdbapi.com/?t=" + parameter + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
         if (!error && response.statusCode === 200) {
             // console.log(JSON.parse(body));
-            console.log(" " + "\n" + "The movie's Title is: " + JSON.parse(body).Title + ". "
-                + "The movie's Year is: " + JSON.parse(body).Year + ". "
-                + "The movie's Imdb Rating is: " + JSON.parse(body).imdbRating + ". "
-                + "The movie's Rotten Tomatoes Rating is: " + JSON.parse(body).Ratings[1].Value + ". "
-                + "The movie's Country is: " + JSON.parse(body).Country + ". "
-                + "The movie's Language is: " + JSON.parse(body).Language + ". "
-                + "The movie's Plot is: " + JSON.parse(body).Plot + ". "
+            console.log(" " + "\n" + "The movie's Title is: " + JSON.parse(body).Title + ". " + "\n"
+                + "The movie's Year is: " + JSON.parse(body).Year + ". " + "\n"
+                + "The movie's Imdb Rating is: " + JSON.parse(body).imdbRating + ". " + "\n"
+                + "The movie's Rotten Tomatoes Rating is: " + JSON.parse(body).Ratings[1].Value + ". " + "\n"
+                + "The movie's Country is: " + JSON.parse(body).Country + ". " + "\n"
+                + "The movie's Language is: " + JSON.parse(body).Language + ". " + "\n"
+                + "The movie's Plot is: " + JSON.parse(body).Plot + ". " + "\n"
                 + "The movie's Actors are: " + JSON.parse(body).Actors + "\n");
 
-            arrayToWrite.push(" " + "\n" + "The movie's Title is: " + JSON.parse(body).Title + ". "
-                + "The movie's Year is: " + JSON.parse(body).Year + ". "
-                + "The movie's Imdb Rating is: " + JSON.parse(body).imdbRating + ". "
-                + "The movie's Rotten Tomatoes Rating is: " + JSON.parse(body).Ratings[1].Value + ". "
-                + "The movie's Country is: " + JSON.parse(body).Country + ". "
-                + "The movie's Language is: " + JSON.parse(body).Language + ". "
-                + "The movie's Plot is: " + JSON.parse(body).Plot + ". "
-                + "The movie's Actors are: " + JSON.parse(body).Actors + "\n")
+            arrayToWrite.push(" " + "\n" + "The movie's Title is: " + JSON.parse(body).Title + ". " + "\n"
+            + "The movie's Year is: " + JSON.parse(body).Year + ". " + "\n"
+            + "The movie's Imdb Rating is: " + JSON.parse(body).imdbRating + ". " + "\n"
+            + "The movie's Rotten Tomatoes Rating is: " + JSON.parse(body).Ratings[1].Value + ". " + "\n"
+            + "The movie's Country is: " + JSON.parse(body).Country + ". " + "\n"
+            + "The movie's Language is: " + JSON.parse(body).Language + ". " + "\n"
+            + "The movie's Plot is: " + JSON.parse(body).Plot + ". " + "\n"
+            + "The movie's Actors are: " + JSON.parse(body).Actors + "\n")
 
             writeThis(arrayToWrite);
         }
@@ -150,6 +134,20 @@ function writeThis(parameter) {
             }
         });
     }
+}
+
+function getValue(parameter) {
+    var text = "";
+    for (var i = 3; i < parameter.length; i++) {
+
+        if (i > 3 && i < parameter.length) {
+            text = text + "+" + parameter[i];
+        }
+        else {
+            text += parameter[i];
+        }
+    }
+    return text;
 }
 
 
