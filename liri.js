@@ -10,21 +10,25 @@ var type = process.argv[2];
 var input = process.argv[3];
 var value = getValue(process.argv);
 
+function main(parameter1, parameter2, parameter3) {
 
-switch (type) {
-    case "my-tweets":
-        getTweets();
-        break;
-    case "spotify-this-song":
-        spotifySong(value);
-        break;
-    case "movie-this":
-        getMovie(input);
-        break;
-    case "do-what-it-says":
-        extFile();
-        break;
+    switch (parameter1) {
+        case "my-tweets":
+            getTweets();
+            break;
+        case "spotify-this-song":
+            spotifySong(parameter3);
+            break;
+        case "movie-this":
+            getMovie(parameter2);
+            break;
+        case "do-what-it-says":
+            extFile();
+            break;
+    }
 }
+
+main(type, input, value);
 
 function getTweets() {
 
@@ -116,10 +120,13 @@ function extFile() {
             return console.log(error);
         }
         var pos = data.indexOf(",");
-        console.log(pos);
-        type = data.substr(0,pos);
-        console.log(str);
-        
+        //console.log(pos);
+        type = data.substr(0, pos);
+        var str = data.substr(pos + 1);
+        //console.log(str);
+        value = getValue(str);
+
+        main(type, input, value);
     });
 }
 
