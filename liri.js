@@ -1,5 +1,6 @@
 
 require("dotenv").config();
+var fs = require("fs");
 var keys = require("./keys.js");
 var Twitter = require("twitter");
 var request = require("request");
@@ -7,17 +8,17 @@ var Spotify = require("node-spotify-api");
 var spotify = new Spotify(keys.spotify);
 var client = new Twitter(keys.twitter);
 var type = process.argv[2];
-var input = process.argv[3];
+// var input = process.argv[3];
 var value = getValue(process.argv);
 
-function main(parameter1, parameter2, parameter3) {
+function main(parameter1, parameter2) {
 
     switch (parameter1) {
         case "my-tweets":
             getTweets();
             break;
         case "spotify-this-song":
-            spotifySong(parameter3);
+            spotifySong(parameter2);
             break;
         case "movie-this":
             getMovie(parameter2);
@@ -28,7 +29,7 @@ function main(parameter1, parameter2, parameter3) {
     }
 }
 
-main(type, input, value);
+main(type, value);
 
 function getTweets() {
 
@@ -37,7 +38,6 @@ function getTweets() {
         count: 20
     }
     client.get("statuses/user_timeline", parameters, function (error, tweets, response) {
-
         if (error) throw error;
         for (i = 0; i < tweets.length; i++) {
             console.log(" ");
@@ -46,6 +46,7 @@ function getTweets() {
             console.log(" ");
         }
     });
+
 }
 
 function spotifySong(parameter) {
@@ -83,12 +84,12 @@ function getValue(parameter) {
     var text = "";
     for (var i = 3; i < parameter.length; i++) {
 
-        if (i > 3 && i < parameter.length) {
-            text = text + "+" + parameter[i];
-        }
-        else {
+        // if (i > 3 && i < parameter.length) {
+        //     text = text + "+" + parameter[i];
+        // }
+        // else {
             text += parameter[i];
-        }
+        // }
     }
     return text;
 }
@@ -100,6 +101,7 @@ function getMovie(parameter) {
     request("http://www.omdbapi.com/?t=" + parameter + "&y=&plot=short&apikey=trilogy", function (error, response, body) {
         if (!error && response.statusCode === 200) {
             console.log("");
+            // console.log(JSON.parse(body));
             console.log("The movie's Title is: " + JSON.parse(body).Title);
             console.log("The movie's Year is: " + JSON.parse(body).Year);
             console.log("The movie's Imdb Rating is: " + JSON.parse(body).imdbRating);
@@ -114,7 +116,7 @@ function getMovie(parameter) {
 }
 
 function extFile() {
-    var fs = require("fs");
+    
     fs.readFile("random.txt", "utf8", function (error, data) {
         if (error) {
             return console.log(error);
@@ -122,11 +124,12 @@ function extFile() {
         var pos = data.indexOf(",");
         //console.log(pos);
         type = data.substr(0, pos);
+        console.log(type);
         var str = data.substr(pos + 1);
-        //console.log(str);
-        value = getValue(str);
+        str.replace(" ", "+");
+        console.log(str);
 
-        main(type, input, value);
+        main(type, str);
     });
 }
 
